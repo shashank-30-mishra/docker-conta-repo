@@ -11,13 +11,15 @@ jobs:
   test:
     environment: testing
     runs-on: ubuntu-latest
-    container:
-      image: node:16
+    # if container removed then we have to add 127.0.0.1:27017 as cluster address and open port at service
+    # container:
+    #   image: node:16 
       # env:
       #   if any env neede to container
     env:
       MONGODB_CONNECTION_PROTOCOL: mongodb
-      MONGODB_CLUSTER_ADDRESS: mongodb # cluster name should be service label name. github action create the nextworking part
+      # MONGODB_CLUSTER_ADDRESS: mongodb # cluster name should be service label name. github action create the nextworking part
+      MONGODB_CLUSTER_ADDRESS: 127.0.0.1:27017
       MONGODB_USERNAME: root
       MONGODB_PASSWORD: example
       PORT: 8080
@@ -27,6 +29,8 @@ jobs:
         env:
           MONGO_INITDB_ROOT_USERNAME: root
           MONGO_INITDB_ROOT_PASSWORD: example
+        port:
+          - 27017:27017
     steps:
       - name: Get Code
         uses: actions/checkout@v3
